@@ -1,0 +1,70 @@
+# enable pretty colors
+export TERM='xterm-256color'
+
+# default exports
+export PAGER='/usr/bin/less'
+export EDITOR='vim'
+export VISUAL='vim'
+
+# pretty colors and visual appearance on ls
+if [ -x /usr/bin/dircolors ]; then
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+
+  alias ls='ls -lhF --color=auto'
+  alias la='ls -lhAF --color=auto'
+
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
+
+# pretty colors on git log
+alias gitlog='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %Cred(Author: %ae)%Creset" --abbrev-commit --date=relative'
+
+# limit ping requests
+alias ping='ping -c 3'
+
+# step back N times from current directory
+stepback() {
+  LIMIT=$1
+  P=$PWD
+  for ((i=1; i <= LIMIT; i++)); do
+    P=$P/..
+  done
+  cd $P
+}
+
+# Custom bash prompt
+__show_git_info() {
+  local g="$(git rev-parse --git-dir 2>/dev/null)"
+  git_branch=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+  if [ -n "`git status 2> /dev/null | grep "# Untracked files:"`" ]; then
+    untracked="*"
+  fi
+  if [ -n "$g" ]; then
+    printf " $(__git_ps1 "(%s)"$untracked)"
+  else
+    printf ""
+  fi
+}
+
+function git_branch {
+  git_branch=`git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/'`
+  if [ -n  "`git status 2> /dev/null | grep "# Untracked files:"`" ]; then
+    untracked="*"
+  fi
+  if [ "`expr "$git_branch" : '.*'`" -gt "0" ]; then
+    echo \($git_branch$untracked\)
+  fi
+}
+
+PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \
+\[$(tput setaf 5)\]\W\[$(tput setaf 1)\]\$(__show_git_info)]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
+
+# do not keep custom paths and what not from system
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+
+# trips get
+if [ ! "$(which screenfetch)" = "" ]; then
+  screenfetch
+fi
