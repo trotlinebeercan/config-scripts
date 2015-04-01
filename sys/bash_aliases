@@ -1,3 +1,9 @@
+if [ -f ~/.git-prompt.sh ]; then
+  . ~/.git-prompt.sh
+  export CLICOLOR=1
+  export LSCOLORS=ExFxCxDxBxegedabagacad
+fi
+
 # enable pretty colors
 export TERM='xterm-256color'
 
@@ -16,6 +22,9 @@ if [ -x /usr/bin/dircolors ]; then
   alias grep='grep --color=auto'
   alias fgrep='fgrep --color=auto'
   alias egrep='egrep --color=auto'
+else
+  alias ls='ls -lhF'
+  alias la='ls -lhAF'
 fi
 
 # cp is so 2000 and late
