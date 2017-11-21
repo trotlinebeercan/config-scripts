@@ -2,10 +2,14 @@ if [ ! -f ~/.git-prompt.sh ]; then
   curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 fi
 
+if [ ! -f ~/.vim/colors/monokai.vim ]; then
+  mkdir -p ~/.vim/colors
+  curl -o ~/.vim/colors/monokai.vim https://raw.githubusercontent.com/sickill/vim-monokai/master/colors/monokai.vim
+fi
+
 source ~/.git-prompt.sh
 export CLICOLOR=1
 export LSCOLORS=ExFxCxDxBxegedabagacad
-
 
 # enable pretty colors
 export TERM='xterm-256color'
