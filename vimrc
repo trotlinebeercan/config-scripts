@@ -15,7 +15,7 @@ set nocompatible
 set autoread
 
 "Always show current position as a horizontal line
-" set cursorline
+set cursorline
 
 " Ignore case when searching
 set ignorecase
@@ -33,7 +33,7 @@ set showmatch
 syntax enable
 
 " Color scheme
-colorscheme elflord
+colorscheme monokai
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -74,9 +74,9 @@ set expandtab
 " Be smart when using tabs
 set smarttab
 
-" 1 tab == 2 spaces
-set shiftwidth=2
-set tabstop=2
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
 
 " Linebreak on 500 characters
 set lbr
@@ -89,5 +89,9 @@ set si
 " Show line numbers
 set number
 
+" Show ruler (column numbers)
+set ruler
+
 " Do not wrap lines
 set nowrap
+

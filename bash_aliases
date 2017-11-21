@@ -1,8 +1,11 @@
-if [ -f ~/.git-prompt.sh ]; then
-  . ~/.git-prompt.sh
-  export CLICOLOR=1
-  export LSCOLORS=ExFxCxDxBxegedabagacad
+if [ ! -f ~/.git-prompt.sh ]; then
+  curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 fi
+
+source ~/.git-prompt.sh
+export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad
+
 
 # enable pretty colors
 export TERM='xterm-256color'
@@ -35,6 +38,20 @@ alias gitlog='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Cres
 
 # limit ping requests
 alias ping='ping -c 3'
+
+# shortcut to remove all in current dir
+alias delall='rm -rf *'
+
+# shortcut for dos2unix all files in current dir
+alias dos2unixbomb='find . -type f -print0 | xargs -0 dos2unix'
+
+# shortcut to search aptitude
+alias apt-search='apt-cache search'
+
+cdmkdir() {
+  mkdir -p $1
+  cd $1
+}
 
 # step back N times from current directory
 stepback() {
@@ -75,6 +92,21 @@ PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\
 
 # do not keep custom paths and what not from system
 export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+
+function reduce_video_size {
+  absopath=$(echo "$(cd "$(dirname "$1")" && pwd)/")
+  filename=$(basename "$1")
+  extension="${filename##*.}"
+  filename="${filename%.*}"
+  bakfile=$absopath/$filename.original.$extension
+  newfile=$absopath/$filename.$extension
+  mv $1 $bakfile
+  ffmpeg -i $bakfile -c:v libx264 -crf 23 $newfile
+}
+
+function video_to_gif {
+  ffmpeg -i $1 -s 640x360 -pix_fmt rgb8 -r 10 -f gif - | gifsicle --optimize=3 --delay=10 > $1.gif
+}
 
 # trips get
 if [ ! "$(which screenfetch)" = "" ]; then
