@@ -2,9 +2,9 @@ if [ ! -f ~/.git-prompt.sh ]; then
   curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 fi
 
-if [ ! -f ~/.vim/colors/monokai.vim ]; then
-  mkdir -p ~/.vim/colors
-  curl -o ~/.vim/colors/monokai.vim https://raw.githubusercontent.com/sickill/vim-monokai/master/colors/monokai.vim
+if [ ! -f ~/.vim/colors/monokai.vim ] && hash curl 2>/dev/null; then
+    mkdir -p ~/.vim/colors
+    curl -o ~/.vim/colors/monokai.vim https://raw.githubusercontent.com/sickill/vim-monokai/master/colors/monokai.vim
 fi
 
 source ~/.git-prompt.sh
@@ -35,7 +35,9 @@ else
 fi
 
 # cp is so 2000 and late
-alias cp='rsync -avz --progress'
+if [ "$OSTYPE" != "msys" ]; then
+    alias cp='rsync -avz --progress'
+fi
 
 # pretty colors on git log
 alias gitlog='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %Cred(Author: %ae)%Creset" --abbrev-commit --date=relative'
@@ -95,7 +97,11 @@ PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\
 \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]\$(__show_git_info)]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
 
 # do not keep custom paths and what not from system
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+if [ "$OSTYPE" != "msys" ]; then
+    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+    export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
+    export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+fi
 
 function reduce_video_size {
   absopath=$(echo "$(cd "$(dirname "$1")" && pwd)/")
@@ -112,7 +118,19 @@ function video_to_gif {
   ffmpeg -i $1 -s 640x360 -pix_fmt rgb8 -r 10 -f gif - | gifsicle --optimize=3 --delay=10 > $1.gif
 }
 
+function make {
+   if [ -f "Makefile" ]; then
+       make
+   elif [ -f "build.ninja" ]; then
+       ninja
+   else
+       echo "Failure"
+   fi
+}
+
 # trips get
-if [ ! "$(which screenfetch)" = "" ]; then
+if hash screenfetch 2>/dev/null; then
   screenfetch
 fi
+
+cd ~
