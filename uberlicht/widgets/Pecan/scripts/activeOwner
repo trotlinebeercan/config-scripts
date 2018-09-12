@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+# right now, if the application has no active window (minimized or all windows closed through cmd-w)
+# then the owner incorrectly appears as Finder.
+exists () {
+    type "$1" &> /dev/null ;
+}
+
+if exists /usr/local/bin/chunkc
+then
+    owner=$(/usr/local/bin/chunkc tiling::query --window owner)
+    if [ "$owner" == "?" ];
+    then
+        echo "Finder"
+    else
+        echo $owner
+    fi
+else
+   	echo "No chunkc found"
+fi
