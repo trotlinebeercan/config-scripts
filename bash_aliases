@@ -93,12 +93,16 @@ function git_branch {
   fi
 }
 
-PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \
-\[$(tput setaf 5)\]\W\[$(tput setaf 1)\]\$(__show_git_info)]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
+#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \
+#\[$(tput setaf 5)\]\W\[$(tput setaf 1)\]\$(__show_git_info)]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
+
+# export PS1="\[\e[32m\][\[\e[m\]\u\[\e[32m\]@\[\e[m\]\h\[\e[32m\]]\[\e[m\]\[\e[32m\]\`__show_git_info\`\[\e[m\] \\$ "
+# export PS1="\[\e[32m\][\[\e[m\]\u\[\e[32m\]@\[\e[m\]\h\[\e[32m\]]\[\e[m\] \w \[\e[32m\]\`__show_git_info\`\[\e[m\] \\$ "
+export PS1="\[\e[32m\][\[\e[m\]\u\[\e[32m\]@\[\e[m\]\h\[\e[32m\]]\[\e[m\] \w\[\e[32m\]\`__show_git_info\`\[\e[m\] \\$ "
 
 # do not keep custom paths and what not from system
 if [ "$OSTYPE" != "msys" ]; then
-    export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+    #export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
     export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
     export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 fi
@@ -118,19 +122,19 @@ function video_to_gif {
   ffmpeg -i $1 -s 640x360 -pix_fmt rgb8 -r 10 -f gif - | gifsicle --optimize=3 --delay=10 > $1.gif
 }
 
-function make {
-   if [ -f "Makefile" ]; then
-       make
-   elif [ -f "build.ninja" ]; then
-       ninja
-   else
-       echo "Failure"
-   fi
-}
+#function make {
+#   if [ -f "Makefile" ]; then
+#       make
+#   elif [ -f "build.ninja" ]; then
+#       ninja
+#   else
+#       echo "Failure"
+#   fi
+#}
 
 # trips get
 if hash screenfetch 2>/dev/null; then
-  screenfetch
+  screenfetch -A "openSUSE"
 fi
 
 cd ~
