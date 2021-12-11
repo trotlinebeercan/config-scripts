@@ -15,7 +15,7 @@ export LSCOLORS=ExFxCxDxBxegedabagacad
 export TERM='xterm-256color'
 
 # default exports
-export PAGER='/usr/bin/less'
+export PAGER='less'
 export EDITOR='vim'
 export VISUAL='vim'
 
