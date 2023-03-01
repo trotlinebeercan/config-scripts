@@ -98,7 +98,8 @@ function git_branch {
 
 # export PS1="\[\e[32m\][\[\e[m\]\u\[\e[32m\]@\[\e[m\]\h\[\e[32m\]]\[\e[m\]\[\e[32m\]\`__show_git_info\`\[\e[m\] \\$ "
 # export PS1="\[\e[32m\][\[\e[m\]\u\[\e[32m\]@\[\e[m\]\h\[\e[32m\]]\[\e[m\] \w \[\e[32m\]\`__show_git_info\`\[\e[m\] \\$ "
-export PS1="\[\e[32m\][\[\e[m\]\u\[\e[32m\]@\[\e[m\]\h\[\e[32m\]]\[\e[m\] \w\[\e[32m\]\`__show_git_info\`\[\e[m\] \\$ "
+# export PS1="\[\e[32m\][\[\e[m\]\u\[\e[32m\]@\[\e[m\]\h\[\e[32m\]]\[\e[m\] \w\[\e[32m\]\`__show_git_info\`\[\e[m\] \\$ "
+export PS1='\[\e[0;92m\][\[\e[0m\]\u\[\e[0;92m\]@\[\e[0m\]\h\[\e[0;92m\]] \[\e[0m\]\W\[\e[0;92m\]$(__show_git_info) \[\e[0m\]\$ \[\e[0m\]'
 
 # do not keep custom paths and what not from system
 if [ "$OSTYPE" != "msys" ]; then
@@ -122,6 +123,10 @@ function video_to_gif {
   ffmpeg -i $1 -s 640x360 -pix_fmt rgb8 -r 10 -f gif - | gifsicle --optimize=3 --delay=10 > $1.gif
 }
 
+function diff_all {
+    for f in `find $1/* ! -type l`;do git diff --ignore-cr-at-eol $f $2/${f##*/};done
+}
+
 #function make {
 #   if [ -f "Makefile" ]; then
 #       make
@@ -137,4 +142,3 @@ if hash screenfetch 2>/dev/null; then
   screenfetch -A "openSUSE"
 fi
 
-cd ~
